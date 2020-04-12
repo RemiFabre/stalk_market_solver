@@ -18,7 +18,7 @@ This is just a simplification to avoid trailing a NUMBER_OF_TURNIPS variable eve
 
 
 def proba_of_price(price):
-    return 1.0 / (MAX_PRICE - MIN_PRICE)
+    return 1.0 / (MAX_PRICE - MIN_PRICE + 1)
 
 
 def sum_of_probas_from_price_to_price(starting_price, ending_price):
@@ -46,9 +46,9 @@ def expected_sell_from_price_to_price(starting_price, ending_price):
 
 
 def calculate_selling_session(selling_session):
-    print("Calculating selling session number {}".format(selling_session))
+    print("## Calculating selling session number {}".format(selling_session))
     if selling_session == 12:
-        print("This is the last selling session, we must sell no matter what")
+        print("  This is the last selling session, we must sell no matter what")
         expected_values[selling_session] = expected_sell_from_price_to_price(
             MIN_PRICE, MAX_PRICE
         )
@@ -69,6 +69,10 @@ def calculate_selling_session(selling_session):
             )
             * expected_values[selling_session + 1]
         )
+        # Expected value = selling value here
+        price_limits[selling_session] = expected_values[selling_session]
+        print("  We must sell if the price is higher than {:.2f}".format(price_limits[selling_session + 1]))
+    print("  Our expected value for this round is {:.2f}\n".format(expected_values[selling_session]))
 
 
 def main():
